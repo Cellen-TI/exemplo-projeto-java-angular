@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:data="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                http://www.springframework.org/schema/tx        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd" >
+
+        <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="ignoreResourceNotFound" value="true"/>
+                <property name="localOverride" value="true"/>
+                <property name="locations">
+                        <list>
+                                <value>classpath:env/environment_DESENVOLVIMENTO.properties</value>
+                                <value>classpath:env/environment_${CONFIG_SISTEMA}.properties</value>
+                        </list>
+                </property>
+        </bean>
+	
+        <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+                <property name="ignoreResourceNotFound" value="true" />
+                <property name="ignoreUnresolvablePlaceholders" value="true" />
+                <property name="localOverride" value="true" />
+                <property name="properties" ref="properties" />
+        </bean>
+        
+        <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+                <property name="host" value="${email.smtp.host}" />
+                <property name="port" value="${email.smtp.port}" />
+                <property name="username" value="${email.smtp.user}" />
+                <property name="password" value="${email.smtp.pass}" />
+ 
+                <property name="javaMailProperties">
+                        <props>
+                                <prop key="mail.smtp.auth">true</prop>
+                                <prop key="mail.smtp.starttls.enable">true</prop>
+                        </props>
+                </property>
+        </bean>
+
+        
+        <context:component-scan base-package="br.com.cellenti.site.servicos"/>
+        <context:annotation-config />
+
+        <data:repositories base-package="br.com.cellenti.site.servicos.repositorio" entity-manager-factory-ref="main_entityManagerFactory" />
+</beans>

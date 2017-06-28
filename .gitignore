@@ -1,0 +1,7 @@
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/nb-configuration.xml
+backend/target/
+frontend/node_modules
+frontend/dist

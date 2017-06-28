@@ -1,0 +1,14 @@
+dist:
+  - clean:dist
+  - ngconstant:dist
+  - copy:dist
+
+server:
+  - ngconstant:server
+  - browserSync:server
+
+serve:
+  - server
+
+default:
+  - server
